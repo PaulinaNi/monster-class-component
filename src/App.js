@@ -1,5 +1,7 @@
 import { Component } from 'react'
 import './App.css';
+import CardList from './components/cardList/cardList.component';
+import SearchBox from './components/searchBox/searchBox.component';
 
 class App extends Component {
   constructor() {
@@ -29,17 +31,14 @@ class App extends Component {
   render() {
     const { searchedMonsterInputHandler } = this
     const { monsters, searchedMonster } = this.state
+
+    const filteredMonsters = monsters.filter(monster => monster.name.toLowerCase().includes(searchedMonster.toLowerCase()))
+
     return (
       <div className="App">
         <h1>Our monsters</h1>
-        <form>
-          Search for monster:
-          <label htmlFor="searchedMonster">
-            <input id="searchedMonster" type="search" onChange={searchedMonsterInputHandler} value={searchedMonster}></input>
-          </label>
-        </form>
-        {/* filter monsters by input value stored in state, make all to lower cases - no case sensitive issue while filtering*/}
-        {monsters.filter(monster => monster.name.toLowerCase().includes(searchedMonster.toLowerCase())).map((monster, index, array) => <h2 key={monster.id}>{monster.name} is monster {index + 1} of {array.length}</h2>)}
+        <SearchBox onChangeHandler={searchedMonsterInputHandler} valueControler={searchedMonster} className="searchBox" htmlForID="searchedMonster" searchFor="monster" />
+        <CardList monsters={filteredMonsters} />
 
       </div>
     );
